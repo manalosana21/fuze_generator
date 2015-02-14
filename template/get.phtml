@@ -1,0 +1,44 @@
+<textarea  rows="50"  style="width: 100%;">
+&lt;?php 
+require_once('../js/good_query.php'); 
+require_once('../js/secured.php');
+
+good_connect();
+ 
+$action  = $_POST['action']; 
+
+$where = "";
+$filter = array();
+if($action == 'list') { 
+ 
+<?php echo View_Helper_Get::helper('CodeCreate')->DisplayFieldTypeList(); ?> 
+ 
+foreach($list as $type =&gt; $fields ) {
+    foreach($fields as $field) { 
+        if(isset($_POST[$field])) {
+        $$field = ($type == 'text' ) ? GetSQLValueString(trim($_POST[$field]),$type):GetSQLValueString($_POST[$field] ,$type) ;
+        $filter[] = $field.&quot; = &quot;.$$field;
+        } 
+    }
+}
+
+if(count($filter) &gt;= 1 ) {  
+$where = " <?php echo View_Helper_SqlCreate::filterCheck(); ?> ".implode(' AND ',$filter);
+}
+
+$<?php echo $table; ?>_table = good_query_table("SELECT * FROM <?php echo $table; ?> where <?php echo View_Helper_Get::helper('SqlCreate')->fkWhere()->statusWhere()->executeWhere(); ?> ".$where);
+} elseif($action == 'single')  {
+ $<?php echo $parameters->primary_key; ?> = GetSQLValueString($_POST['<?php echo $parameters->primary_key; ?>'],"int");
+if(empty($<?php echo $parameters->primary_key; ?>)) {
+echo json_encode(array());	
+return false;	
+}
+$<?php echo $table; ?>_table = good_query_assoc("SELECT * FROM <?php echo $table; ?> where <?php echo View_Helper_Get::helper('SqlCreate')->fkWhere()->statusWhere()->executeWhere(); ?>  AND <?php echo $parameters->primary_key; ?> = $<?php echo $parameters->primary_key; ?> ");
+
+}
+echo json_encode($<?php echo $table; ?>_table);
+
+good_close();
+
+?&gt; 
+</textarea>

@@ -1,0 +1,354 @@
+<textarea   rows="300" style="width:100%">
+&lt;?php 
+  require_once('js/header.php'); ?&gt;
+  &lt;div id=&quot;div_<?php echo $table; ?>&quot; &gt;
+  &lt;table&gt;
+  &lt;thead&gt;
+  &lt;tr class=&quot;bg_lightpink&quot;&gt;
+  &lt;td colspan=&quot;11&quot; class=&quot;large_text bold_text&quot;&gt;<?php echo $parameters->table_title; ?>&lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+<?php 
+ 		foreach($parameters->list_fields as $key => $list_field) {
+			if(View_Helper_CSCreate::isFklist($list_field) && View_Helper_CSCreate::isStatus($key) && View_Helper_CSCreate::isDefaultValue($list_field)) {
+?>   
+  &lt;td class=&quot;small_text&quot;&gt;<?php echo $list_field['field_name'] ?>&lt;/td&gt;
+<?php
+			}
+		}
+
+?>
+  &lt;td&gt;&lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;/thead&gt;
+  &lt;tbody&gt;
+  &lt;tr&gt;
+<?php 
+		foreach($parameters->list_fields as $key => $list_field) {
+			if(View_Helper_CSCreate::isFklist($list_field) && View_Helper_CSCreate::isStatus($key) && View_Helper_CSCreate::isDefaultValue($list_field)) {
+				if($list_field['is_enum'] == 0) {
+?>     
+  &lt;td&gt;&lt;input type=&quot;text&quot; id=&quot;input_<?php echo $list_field['field'] ?>&quot; value=&quot;&quot;&gt;&lt;/td&gt;
+<?php
+ 				} else {
+?>
+   &lt;td&gt;&lt;select id=&quot;input_<?php echo $list_field['field'] ?>&quot;&gt;
+  <?php foreach($list_field['enum'] as $item_label => $value) { ?>
+  &lt;option value=&quot;<?php echo $item_label ?>&quot;&gt;<?php echo $value ?>&lt;/option&gt;
+  <?php } ?>
+  &lt;/select&gt;&lt;/td&gt;
+<?php
+				}
+			}
+		}
+
+?>  
+  &lt;td&gt;&lt;input type=&quot;button&quot; id=&quot;btn_add&quot; value=&quot;Add&quot;&gt;
+  &lt;input type=&quot;hidden&quot; id=&quot;btn_cancel&quot; value=&quot;Cancel&quot;&gt;&lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+  &lt;td colspan=&quot;9&quot; &gt;&amp;nbsp;&lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+  &lt;td colspan=&quot;9&quot; &gt;&lt;table width=&quot;100%&quot;&gt;
+  &lt;thead&gt;
+  &lt;tr class=&quot;bg_lightpink&quot;&gt;
+  &lt;td colspan=&quot;11&quot; class=&quot;large_text bold_text&quot;&gt;Search&lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+<?php 
+		foreach($parameters->list_fields as $key => $list_field) {
+			if(View_Helper_CSCreate::isFklist($list_field) && View_Helper_CSCreate::isStatus($key) && View_Helper_CSCreate::isDefaultValue($list_field)) {
+?>     
+  &lt;td class=&quot;small_text&quot;&gt;<?php echo $list_field['field_name'] ?>&lt;/td&gt;
+<?php
+			}
+		}
+
+?>  
+  &lt;td&gt;&lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;/thead&gt;
+  &lt;tbody&gt;
+  &lt;tr&gt;
+<?php 
+		foreach($parameters->list_fields as $key => $list_field) {
+			if(View_Helper_CSCreate::isFklist($list_field) && View_Helper_CSCreate::isStatus($key) && View_Helper_CSCreate::isDefaultValue($list_field)) {
+				if($list_field['is_enum'] == 0) {
+?>     
+  &lt;td&gt;&lt;input type=&quot;text&quot; id=&quot;search_<?php echo $list_field['field'] ?>&quot; value=&quot;&quot;&gt;&lt;/td&gt;
+<?php
+ 				} else {
+?>  
+  &lt;td&gt;&lt;select id=&quot;search_<?php echo $list_field['field'] ?>&quot;&gt;
+  &lt;option value=&quot;&quot;&gt;[Select]&lt;/option&gt;
+  <?php foreach($list_field['enum'] as $item_label => $value) { ?>
+  &lt;option value=&quot;<?php echo $item_label ?>&quot;&gt;<?php echo $value ?>&lt;/option&gt;
+  <?php } ?>
+  &lt;/select&gt;&lt;/td&gt;
+<?php
+				}
+			}
+		}
+?>    
+  &lt;td&gt;&lt;input type=&quot;button&quot; id=&quot;btn_refresh&quot; value=&quot;Refresh&quot;/&gt;&lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+  &lt;/tbody&gt;
+  &lt;/table&gt;&lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+  &lt;td colspan=&quot;9&quot; &gt;&amp;nbsp;&lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+  &lt;td colspan=&quot;9&quot; &gt;&lt;table id=&quot;result_table&quot;  class=&quot;tablesorter result_table&quot; width=&quot;100%&quot;&gt;
+  &lt;thead&gt;
+  &lt;tr  class=&quot;bg_lightgreen&quot;&gt;
+<?php 
+		foreach($parameters->list_fields as $key => $list_field) {
+			if(View_Helper_CSCreate::isFklist($list_field) && View_Helper_CSCreate::isStatus($key)) {	
+?>    
+  &lt;th&gt;&lt;label&gt;<?php echo $list_field['field_name'] ?>&lt;/label&gt;&lt;/th&gt;
+<?php
+			}
+		}
+
+?>
+  &lt;th colspan=&quot;2&quot;  data-sorter=&quot;false&quot;&gt;&lt;label&gt;Action&lt;/label&gt;&lt;/th&gt;
+  &lt;/tr&gt;
+  &lt;/thead&gt;
+  &lt;tbody  class=&quot;tbody_block_print&quot;&gt;
+  &lt;/tbody&gt;
+  &lt;/table&gt;&lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;/tbody&gt;
+  &lt;/table&gt;
+  &lt;/div&gt;
+  &lt;script type=&quot;application/javascript&quot; language=&quot;javascript&quot;&gt; 
+  var enum_field_list  = new Array();
+  
+  function get_field_list() { 
+  field_list = new Array(<?php echo View_Helper_Get::helper('CodeCreate')->DisplayJavascriptFieldList() ?>); 
+  return field_list;
+  } 
+  
+  function create_enum_field_list(input_type) { 
+  enum_field_list[input_type] = new Array();
+  $(&quot;#input_&quot;+input_type+&quot; option&quot;).each(function()
+  {
+  enum_field_list[input_type][$(this).attr('value')] = $(this).text();
+  }); 
+  }
+ function get_enum_field_list(input_type,id) { 
+  if(enum_field_list[input_type]) {
+  var enum_field = enum_field_list[input_type];
+  if(enum_field[id]) {
+  return enum_field[id];
+  }
+  }
+  return id;
+  }
+ 
+  function add<?php echo str_replace(' ', '',$parameters->table_title); ?>() {
+  var list = get_field_list();
+  var dataString = '';
+<?php 
+		foreach($parameters->list_fields as $key => $list_field) {
+ 			if(View_Helper_CSCreate::isFklist($list_field) && View_Helper_CSCreate::IsRequired($list_field)) {
+?>       
+  var input_<?php echo $list_field['field'] ?>  =  $.trim($('#input_<?php echo $list_field['field'] ?>').val()); 
+  if(input_<?php echo $list_field['field'] ?> == '' ) {
+  showMessage('<?php echo $list_field['field_name'] ?> must not be empty', 'error'); 
+  return false;
+  }
+<?php
+			}
+		}
+
+?>    
+  for (i in list ) {
+      if($('#input_'+list[i]).length >= 1) {
+      dataString += '&amp;input_'+list[i]+'='+$('#input_'+list[i]).val(); 
+      }
+  }
+  dataString += '&amp;action=add';
+  writeDataConfirm(dataString, 'write_<?php echo $table; ?>.php', function (row){
+  if(row == 0) {
+  showMessage('Error.', 'error');
+  return false;
+  }
+  showMessage('<?php echo $parameters->table_title ?> Saved.', 'success');
+  get<?php echo str_replace(' ', '',$parameters->table_title); ?>();
+  });
+  
+  }
+ function edit<?php echo str_replace(' ', '',$parameters->table_title); ?>() {
+  var list = get_field_list();
+  var msg = ''
+  var dataString = '';
+  var <?php echo $parameters->primary_key; ?> = $(&quot;#btn_add&quot;).attr('<?php echo $parameters->primary_key; ?>');
+   if(<?php echo $parameters->primary_key; ?> &lt;= 0 ) {
+  showMessage('Error', 'error'); 
+  return false;
+  }
+<?php 
+		foreach($parameters->list_fields as $key => $list_field) {
+			if(View_Helper_CSCreate::isFklist($list_field) && View_Helper_CSCreate::IsRequired($list_field)) {
+?>    
+  var input_<?php echo $list_field['field'] ?> =  $.trim($('#input_<?php echo $list_field['field'] ?>').val()); 
+  if(input_<?php echo $list_field['field'] ?> == '' ) {
+  showMessage('<?php echo $list_field['field_name'] ?> must not be empty', 'error'); 
+  return false;
+  }
+<?php
+			}
+		}
+
+?>   
+  dataString += '&amp;input_<?php echo $parameters->primary_key; ?>='+<?php echo $parameters->primary_key; ?>;
+  for (i in list ) {
+   	if($('#input_'+list[i]).length >= 1) {
+  	dataString += '&amp;input_'+list[i]+'='+$('#input_'+list[i]).val();
+    } 
+  }
+  dataString += '&amp;action=update';
+  writeDataConfirm(dataString, 'write_<?php echo $table; ?>.php', function (row){
+  if(row == 0) {
+  showMessage('Error.', 'error');
+  return false;
+  }
+  showMessage('<?php echo $parameters->table_title; ?> Saved.', 'success');
+  for(i in list) {
+  var text = get_enum_field_list(list[i],row[list[i]]);
+  $('#tr_<?php echo $table; ?>_'+row['<?php echo $parameters->primary_key; ?>']+' .'+list[i]).html(text);
+  }
+  });
+  
+  }
+  
+  function get<?php echo str_replace(' ', '',$parameters->table_title); ?>() {
+  var list = get_field_list();
+  var dataString =  '&amp;action=list';
+  for (i in list) {
+  if($(&quot;#search_&quot;+list[i]).val() != '') {
+    if($('#search_'+list[i]).length >= 1) { 
+        dataString += '&amp;'+list[i]+'='+$(&quot;#search_&quot;+list[i]).val();
+    } 
+  }
+  } 
+  $('#result_table tbody').html('');
+  writeDataConfirm(dataString, 'get_<?php echo $table; ?>.php', function(rows){
+  if(rows == 0) {
+  $(&quot;#result_table&quot;).trigger(&quot;update&quot;);
+  return false;
+  }
+  for(var i in rows) {
+  add<?php echo str_replace(' ', '',$parameters->table_title); ?>Row(rows[i]);
+  }
+  $(&quot;#result_table&quot;).trigger(&quot;update&quot;);
+  });
+  
+  }
+  
+  function add<?php echo str_replace(' ', '',$parameters->table_title); ?>Row(row) {
+  var list = get_field_list();
+  var echo = '&lt;tr id=&quot;tr_<?php echo $table; ?>_'+row['<?php echo $parameters->primary_key; ?>']+'&quot;&gt;';
+  for (i in list) {
+  echo += '&lt;td class=&quot;'+list[i]+'&quot;&gt;'+get_enum_field_list(list[i],row[list[i]])+'&lt;/td&gt;';
+  }
+  echo += '&lt;td&gt;&lt;a class=&quot;btn_edit&quot; <?php echo $parameters->primary_key; ?>=&quot;'+row['<?php echo $parameters->primary_key; ?>']+'&quot;&gt;edit&lt;/a&gt; ';
+  echo += '| &lt;a class=&quot;btn_delete&quot; <?php echo $parameters->primary_key; ?>=&quot;'+row['<?php echo $parameters->primary_key; ?>']+'&quot;&gt;delete&lt;/a&gt;&lt;/td&gt;';
+  echo += '&lt;/td&gt;';
+  echo += '&lt;/tr&gt;';
+  $('.result_table tbody').append(echo);
+  }
+  
+  function reset_boxes() {
+  var list = get_field_list();
+  for(i in list ) {
+  $(&quot;#input_&quot;+list[i]).val('');
+  }
+  $(&quot;#btn_add&quot;).removeAttr('<?php echo $parameters->primary_key; ?>');
+  $(&quot;#btn_add&quot;).val('Add');
+  $(&quot;#btn_cancel&quot;).attr('type','hidden'); 
+  }
+ function init() {
+  $( &quot;#btn_add&quot; ).click(function() {
+  var optionvalue = $( this).val();
+  switch(optionvalue) {
+  case 'Add':
+  add<?php echo str_replace(' ', '',$parameters->table_title); ?>();
+  break;
+  case 'Update':
+  edit<?php echo str_replace(' ', '',$parameters->table_title); ?>(); 
+  break;
+  } 
+  }); 
+  
+  $( &quot;#btn_cancel&quot; ).click(function() {
+  reset_boxes();
+  }); 
+  $( &quot;#btn_refresh&quot; ).click(function() {
+  get<?php echo str_replace(' ', '',$parameters->table_title); ?>();
+  }); 
+  
+  $('body').on('click', '.btn_edit', function(){
+  var <?php echo $parameters->primary_key; ?> = $(this).attr('<?php echo $parameters->primary_key; ?>');
+  
+  var dataString = '';
+  dataString += '&amp;<?php echo $parameters->primary_key; ?>='+<?php echo $parameters->primary_key; ?>; 
+  dataString += '&amp;action=single'; 
+  writeDataConfirm(dataString, 'get_<?php echo $table; ?>.php', function (row){
+  if(row == 0) {
+  showMessage('Error.', 'error');
+  return false;
+  }
+  var list = new Array('<?php echo $parameters->primary_key; ?>',<?php echo View_Helper_Get::helper('CodeCreate')->DisplayJavascriptFieldList() ?>); 
+  for(i in list ) {
+      if($('#input_'+list[i]).length >= 1) { 
+      $(&quot;#input_&quot;+list[i]).val(row[list[i]]);
+      }
+  }
+  $(&quot;#btn_add&quot;).val('Update');
+  $(&quot;#btn_add&quot;).attr('<?php echo $parameters->primary_key; ?>',row['<?php echo $parameters->primary_key; ?>']);
+  $(&quot;#btn_cancel&quot;).attr('type','button');
+  });
+  
+  });
+  
+  $('body').on('click', '.btn_delete', function(){
+  var <?php echo $parameters->primary_key; ?> = $(this).attr('<?php echo $parameters->primary_key; ?>');
+  
+  var dataString = '';
+  confirm_popup('Delete','Are you sure you want to delete this file?',function(){
+  dataString += '&amp;<?php echo $parameters->primary_key; ?>='+<?php echo $parameters->primary_key; ?>; 
+  dataString += '&amp;action=delete'; 
+  writeDataConfirm(dataString, 'write_<?php echo $table; ?>.php', function(row){
+  if(row == 1) {
+  $('#tr_<?php echo $table; ?>_'+<?php echo $parameters->primary_key; ?>).remove();
+  }
+  });
+  reset_boxes(); 
+  });
+  
+  }); 
+  <?php if (count($parameters->enum_list) >= 1) { ?>
+  var list = new Array(<?php echo "'".implode("','",$parameters->enum_list)."',"?>);
+  for(i in list) {
+  create_enum_field_list(list[i]);
+  } 
+  <?php } ?>
+  get<?php echo str_replace(' ', '',$parameters->table_title); ?>(); 
+  $(&quot;#result_table&quot;).tablesorter( {} ); 
+  
+  }
+  
+  $( document ).ready(function() {
+  init();
+  });
+  &lt;/script&gt;
+  &lt;?php require_once('js/footer.php'); ?&gt;
+ 
+</textarea>
+
+
