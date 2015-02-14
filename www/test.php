@@ -1,5 +1,5 @@
 <?php
-
+/*test commit */
 require_once('js/good_query.php'); 
 
 good_connect();
