@@ -15,7 +15,7 @@ class View_Helper_ArrayCreate {
 	public function stored_lists() {
  		$parameters =  View_Helper_Get::single('parameters'); 
 		$stored_lists = array(
-							'created_date'=>'now()',
+							'created_date'=>'\'now()\'',
 							);	
 		$parameters->stored_lists = $stored_lists;								
 	} 	

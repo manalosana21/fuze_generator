@@ -32,9 +32,7 @@ class View_Helper_CodeCreate {
 		$store_fields = array();
 		 
 		foreach($parameters->list_fields as $key => $list_field) {
-			//&& !isset($list_field['is_status'])
-			//(isset($list_field['default_value']) && empty($list_field['default_value'])) 
-			$allow = 1;
+  			$allow = 1;
 			if(isset($this->options_disp_f_type_list['show_default_value']) && $this->options_disp_f_type_list['show_default_value'] == 0) {
 				if(isset($list_field['default_value']) && empty($list_field['default_value']))  {
 				$allow = 1;	
@@ -62,7 +60,7 @@ class View_Helper_CodeCreate {
 	}
 	
 	
- 	public function DisplayJavascriptFieldList() { 
+ 	public function DisplayJavascriptFieldList($is_implode=1) { 
 		$parameters =  View_Helper_Get::single('parameters'); 
  		$get_page = "";
 		$store_fields = array();
@@ -79,8 +77,11 @@ class View_Helper_CodeCreate {
  				 $store_fields[] = $list_field['field'];
  			}
 		}
-   		
-		return "'".implode("','",$store_fields)."'";
+   		if($is_implode == 1) {
+ 		return "'".implode("','",$store_fields)."'";
+		} else {
+		return $store_fields;	
+		}
 	}	
 	
 }

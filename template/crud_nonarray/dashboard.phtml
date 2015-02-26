@@ -126,32 +126,8 @@
   &lt;/table&gt;
   &lt;/div&gt;
   &lt;script type=&quot;application/javascript&quot; language=&quot;javascript&quot;&gt; 
-  var enum_field_list  = new Array();
-  
-  function get_field_list() { 
-  field_list = new Array(<?php echo View_Helper_Get::helper('CodeCreate')->DisplayJavascriptFieldList() ?>); 
-  return field_list;
-  } 
-  
-  function create_enum_field_list(input_type) { 
-  enum_field_list[input_type] = new Array();
-  $(&quot;#input_&quot;+input_type+&quot; option&quot;).each(function()
-  {
-  enum_field_list[input_type][$(this).attr('value')] = $(this).text();
-  }); 
-  }
- function get_enum_field_list(input_type,id) { 
-  if(enum_field_list[input_type]) {
-  var enum_field = enum_field_list[input_type];
-  if(enum_field[id]) {
-  return enum_field[id];
-  }
-  }
-  return id;
-  }
- 
+
   function add<?php echo str_replace(' ', '',$parameters->table_title); ?>() {
-  var list = get_field_list();
   var dataString = '';
 <?php 
 		foreach($parameters->list_fields as $key => $list_field) {
@@ -167,11 +143,11 @@
 		}
 
 ?>    
-  for (i in list ) {
-      if($('#input_'+list[i]).length >= 1) {
-      dataString += '&amp;input_'+list[i]+'='+$('#input_'+list[i]).val(); 
+  <?php foreach($store_fields as $store_field) { ?>
+      if($('#input_<?php echo $store_field; ?>').length >= 1) {
+      dataString += '&amp;input_<?php echo $store_field; ?>='+$('#input_<?php echo $store_field; ?>').val(); 
       }
-  }
+  <?php } ?>     
   dataString += '&amp;action=add';
   writeDataConfirm(dataString, 'write_<?php echo $table; ?>.php', function (row){
   if(row == 0) {
@@ -184,7 +160,6 @@
   
   }
  function edit<?php echo str_replace(' ', '',$parameters->table_title); ?>() {
-  var list = get_field_list();
   var msg = ''
   var dataString = '';
   var <?php echo $parameters->primary_key; ?> = $(&quot;#btn_add&quot;).attr('<?php echo $parameters->primary_key; ?>');
@@ -207,11 +182,11 @@
 
 ?>   
   dataString += '&amp;input_<?php echo $parameters->primary_key; ?>='+<?php echo $parameters->primary_key; ?>;
-  for (i in list ) {
-   	if($('#input_'+list[i]).length >= 1) {
-  	dataString += '&amp;input_'+list[i]+'='+$('#input_'+list[i]).val();
-    } 
-  }
+  <?php foreach($store_fields as $store_field) { ?>
+      if($('#input_<?php echo $store_field; ?>').length >= 1) {
+      dataString += '&amp;input_<?php echo $store_field; ?>='+$('#input_<?php echo $store_field; ?>').val(); 
+      }
+  <?php } ?>   
   dataString += '&amp;action=update';
   writeDataConfirm(dataString, 'write_<?php echo $table; ?>.php', function (row){
   if(row == 0) {
@@ -219,24 +194,26 @@
   return false;
   }
   showMessage('<?php echo $parameters->table_title; ?> Saved.', 'success');
-  for(i in list) {
-  var text = get_enum_field_list(list[i],row[list[i]]);
-  $('#tr_<?php echo $table; ?>_'+row['<?php echo $parameters->primary_key; ?>']+' .'+list[i]).html(text);
-  }
+   <?php foreach($store_fields as $store_field) { ?>
+      if($('#input_<?php echo $store_field; ?>').length >= 1) {
+           $('#tr_<?php echo $table; ?>_'+row['<?php echo $parameters->primary_key; ?>']+' .<?php echo $store_field; ?>').html(row['<?php echo $store_field; ?>']);
+      }
+  <?php } ?>  
+  
   });
   
   }
   
   function get<?php echo str_replace(' ', '',$parameters->table_title); ?>() {
-  var list = get_field_list();
   var dataString =  '&amp;action=list';
-  for (i in list) {
-  if($(&quot;#search_&quot;+list[i]).val() != '') {
-    if($('#search_'+list[i]).length >= 1) { 
-        dataString += '&amp;'+list[i]+'='+$(&quot;#search_&quot;+list[i]).val();
-    } 
-  }
-  } 
+
+   <?php foreach($store_fields as $store_field) { ?>
+      if($(&quot;#search_<?php echo $store_field; ?>&quot;).val() != '') {
+        if($('#search_<?php echo $store_field; ?>').length >= 1) { 
+            dataString += '&amp;<?php echo $store_field; ?>='+$(&quot;#search_<?php echo $store_field; ?>&quot;).val();
+        } 
+      }
+  <?php } ?>    
   $('#result_table tbody').html('');
   writeDataConfirm(dataString, 'get_<?php echo $table; ?>.php', function(rows){
   if(rows == 0) {
@@ -252,11 +229,11 @@
   }
   
   function add<?php echo str_replace(' ', '',$parameters->table_title); ?>Row(row) {
-  var list = get_field_list();
   var echo = '&lt;tr id=&quot;tr_<?php echo $table; ?>_'+row['<?php echo $parameters->primary_key; ?>']+'&quot;&gt;';
-  for (i in list) {
-  echo += '&lt;td class=&quot;'+list[i]+'&quot;&gt;'+get_enum_field_list(list[i],row[list[i]])+'&lt;/td&gt;';
-  }
+
+  <?php foreach($store_fields as $store_field) { ?>
+  echo += '&lt;td class=&quot;<?php echo $store_field; ?>&quot;&gt;'+row['<?php echo $store_field; ?>']+'&lt;/td&gt;';
+  <?php } ?>   
   echo += '&lt;td&gt;&lt;a class=&quot;btn_edit&quot; <?php echo $parameters->primary_key; ?>=&quot;'+row['<?php echo $parameters->primary_key; ?>']+'&quot;&gt;edit&lt;/a&gt; ';
   echo += '| &lt;a class=&quot;btn_delete&quot; <?php echo $parameters->primary_key; ?>=&quot;'+row['<?php echo $parameters->primary_key; ?>']+'&quot;&gt;delete&lt;/a&gt;&lt;/td&gt;';
   echo += '&lt;/td&gt;';
@@ -265,10 +242,9 @@
   }
   
   function reset_boxes() {
-  var list = get_field_list();
-  for(i in list ) {
-  $(&quot;#input_&quot;+list[i]).val('');
-  }
+  <?php foreach($store_fields as $store_field) { ?>
+  $(&quot;#input_<?php echo $store_field; ?>&quot;).val('');    
+  <?php } ?>   
   $(&quot;#btn_add&quot;).removeAttr('<?php echo $parameters->primary_key; ?>');
   $(&quot;#btn_add&quot;).val('Add');
   $(&quot;#btn_cancel&quot;).attr('type','hidden'); 
@@ -305,11 +281,12 @@
   return false;
   }
   var list = new Array('<?php echo $parameters->primary_key; ?>',<?php echo View_Helper_Get::helper('CodeCreate')->DisplayJavascriptFieldList() ?>); 
-  for(i in list ) {
-      if($('#input_'+list[i]).length >= 1) { 
-      $(&quot;#input_&quot;+list[i]).val(row[list[i]]);
+ 
+  <?php foreach($store_fields as $store_field) { ?>
+      if($('#input_<?php echo $store_field; ?>').length >= 1) { 
+      $(&quot;#input_<?php echo $store_field; ?>&quot;).val(row['<?php echo $store_field; ?>']);
       }
-  }
+  <?php } ?>   
   $(&quot;#btn_add&quot;).val('Update');
   $(&quot;#btn_add&quot;).attr('<?php echo $parameters->primary_key; ?>',row['<?php echo $parameters->primary_key; ?>']);
   $(&quot;#btn_cancel&quot;).attr('type','button');
@@ -324,7 +301,7 @@
   confirm_popup('Delete','Are you sure you want to delete this file?',function(){
   dataString += '&amp;<?php echo $parameters->primary_key; ?>='+<?php echo $parameters->primary_key; ?>; 
   dataString += '&amp;action=delete'; 
-  writeDataConfirm(dataString, 'write_<?php echo $table; ?>.php', function(row){
+  writeDataConfirm(dataString, 'delete_<?php echo $table; ?>.php', function(row){
   if(row == 1) {
   $('#tr_<?php echo $table; ?>_'+<?php echo $parameters->primary_key; ?>).remove();
   }
@@ -333,12 +310,7 @@
   });
   
   }); 
-  <?php if (count($parameters->enum_list) >= 1) { ?>
-  var list = new Array(<?php echo "'".implode("','",$parameters->enum_list)."',"?>);
-  for(i in list) {
-  create_enum_field_list(list[i]);
-  } 
-  <?php } ?>
+ 
   get<?php echo str_replace(' ', '',$parameters->table_title); ?>(); 
   $(&quot;#result_table&quot;).tablesorter( {} ); 
   

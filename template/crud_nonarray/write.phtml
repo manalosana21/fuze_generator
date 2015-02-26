@@ -4,24 +4,9 @@
     require_once('../js/good_query.php'); 
     require_once('../js/secured.php'); 
     good_connect();
-    $action  = $_POST['action']; 
     $result = 0 ;
     $allow = 1;
-    if($action == 'add') { 
-<?php 
-		foreach($parameters->list_fields as $key => $list_field) {
- 			if(View_Helper_CSCreate::isFklist($list_field) && !isset($list_field['is_status']) && View_Helper_CSCreate::IsRequired($list_field)) {
-?> 
-        $input_<?php echo $list_field['field'] ?> = trim($_POST['input_<?php echo  $list_field['field']; ?>']);
-        if(empty($input_<?php echo $list_field['field'] ?>)) {
-            $allow = 0; 
-        }
-<?php
-			}
-		}
-
-?>
-        if($allow == 1) { 
+    
 <?php 
 		foreach($parameters->list_fields as $key => $list_field) {
 			if(View_Helper_CSCreate::isFklist($list_field) && !isset($list_field['is_status'])) {
@@ -43,16 +28,32 @@
 			}
 		}
 
-?>        
+?>
+    $input_<?php echo $parameters->primary_key; ?> = GetSQLValueString($_POST['input_<?php echo $parameters->primary_key; ?>'],&quot;int&quot;);    
+    if($input_<?php echo $parameters->primary_key; ?> <= 0) { 
+<?php 
+		foreach($parameters->list_fields as $key => $list_field) {
+ 			if(View_Helper_CSCreate::isFklist($list_field) && !isset($list_field['is_status']) && View_Helper_CSCreate::IsRequired($list_field)) {
+?> 
+        $input_<?php echo $list_field['field'] ?> = trim($_POST['input_<?php echo  $list_field['field']; ?>']);
+        if(empty($input_<?php echo $list_field['field'] ?>)) {
+            $allow = 0; 
+        }
+<?php
+			}
+		}
+
+?>
+          
         $sql = &quot;
         INSERT INTO <?php echo $table; ?> set 
 		<?php echo View_Helper_Get::helper('SqlCreate')->insertFields()->fkFields()->executeFields(); ?>
  		&quot;;
         good_query($sql);
         $result = good_last();
-        }
-    } elseif($action == 'update') { 
-    $input_<?php echo $parameters->primary_key; ?> = GetSQLValueString($_POST['input_<?php echo $parameters->primary_key; ?>'],&quot;int&quot;);
+       
+    } else { 
+
     $update_list = array();
     
 	<?php echo View_Helper_Get::helper('CodeCreate')->setShowDefaultValue(0)->DisplayFieldTypeList(); ?> 
@@ -69,26 +70,7 @@
     good_query(&quot;update <?php echo $table; ?> set &quot;.implode(&quot;,&quot;,$update_list).&quot; WHERE <?php echo $parameters->primary_key; ?> = $input_<?php echo $parameters->primary_key; ?>;&quot;);
     $result = good_query_assoc(&quot;select * from  <?php echo $table; ?> WHERE <?php echo $parameters->primary_key; ?> = $input_<?php echo $parameters->primary_key; ?>;&quot;);
     } 
-<?php if($parameters->is_status_exist == 1)  { ?>    
-    } elseif($action == 'delete') { 
-    $<?php echo $parameters->primary_key; ?> = GetSQLValueString($_POST['<?php echo $parameters->primary_key; ?>'],&quot;int&quot;);
-        if(!empty($<?php echo $parameters->primary_key; ?>)) {
-            good_query(&quot;update <?php echo $table; ?> set <?php echo $parameters->list_fields[$parameters->status_key]['field'] ?> = -1 WHERE <?php echo $parameters->primary_key; ?> = $<?php echo $parameters->primary_key; ?>;&quot;);
-            $result = 1;
-        }
-    }
-<?php } else { ?>   
-    } elseif($action == 'delete') { 
-        $input_<?php echo $parameters->primary_key; ?> = $_POST['input_<?php echo $parameters->primary_key; ?>']; 
-        if(empty($input_<?php echo $parameters->primary_key; ?>)) {
-        echo json_encode($result);
-        return false; 
-        }
-        $<?php echo $parameters->primary_key; ?> = GetSQLValueString($input_<?php echo $parameters->primary_key; ?>,&quot;int&quot;); 
-        good_query(&quot;delete from  <?php echo $table; ?> WHERE <?php echo $parameters->primary_key; ?> = $<?php echo $parameters->primary_key; ?>;&quot;);
-        $result = 1;
-    } 
-<?php } ?>    
+ 
     echo json_encode($result);
     good_close();
 ?&gt;
