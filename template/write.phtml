@@ -12,7 +12,7 @@
 		foreach($parameters->list_fields as $key => $list_field) {
  			if(View_Helper_CSCreate::isFklist($list_field) && !isset($list_field['is_status']) && View_Helper_CSCreate::IsRequired($list_field)) {
 ?> 
-        $input_<?php echo $list_field['field'] ?> = trim($_POST['input_<?php echo  $list_field['field']; ?>']);
+        $input_<?php echo $list_field['field'] ?> = trim($_POST['<?php echo  $list_field['field']; ?>']);
         if(empty($input_<?php echo $list_field['field'] ?>)) {
             $allow = 0; 
         }

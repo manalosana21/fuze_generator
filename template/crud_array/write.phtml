@@ -79,7 +79,7 @@
     }
 <?php } else { ?>   
     } elseif($action == 'delete') { 
-        $input_<?php echo $parameters->primary_key; ?> = $_POST['input_<?php echo $parameters->primary_key; ?>']; 
+        $input_<?php echo $parameters->primary_key; ?> = $_POST['<?php echo $parameters->primary_key; ?>']; 
         if(empty($input_<?php echo $parameters->primary_key; ?>)) {
         echo json_encode($result);
         return false; 
