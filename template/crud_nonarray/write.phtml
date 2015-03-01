@@ -6,46 +6,25 @@
     good_connect();
     $result = 0 ;
     $allow = 1;
-    
+    $UserID = 1;
+    $GroupID = 1;
+    $CompanyID  =1;   
 <?php 
+		$update_fields = array();	
 		foreach($parameters->list_fields as $key => $list_field) {
 			if(View_Helper_CSCreate::isFklist($list_field) && !isset($list_field['is_status'])) {
-				if(View_Helper_CSCreate::IsRequired($list_field)) {
-?>         
-        $<?php echo $list_field['field'] ?> = GetSQLValueString($input_<?php echo $list_field['field'] ?> ,&quot;<?php echo $list_field['type'] ?>&quot;);
-<?php 		
-				} else { 
-					if(isset($list_field['default_value']) && !empty($list_field['default_value'])) {
-?>
-		$<?php echo $list_field['field'] ?> = <?php echo $list_field['default_value']; ?>;
-<?php
- 						
-					} else {
-?>							        
+ ?>         
         $<?php echo $list_field['field'] ?> = GetSQLValueString($_POST['input_<?php echo $list_field['field'] ?>'],&quot;<?php echo $list_field['type'] ?>&quot;);
-<?php				}
-				}
-			}
-		}
-
-?>
-    $input_<?php echo $parameters->primary_key; ?> = GetSQLValueString($_POST['input_<?php echo $parameters->primary_key; ?>'],&quot;int&quot;);    
-    if($input_<?php echo $parameters->primary_key; ?> <= 0) { 
-<?php 
-		foreach($parameters->list_fields as $key => $list_field) {
- 			if(View_Helper_CSCreate::isFklist($list_field) && !isset($list_field['is_status']) && View_Helper_CSCreate::IsRequired($list_field)) {
-?> 
-        $input_<?php echo $list_field['field'] ?> = trim($_POST['input_<?php echo  $list_field['field']; ?>']);
-        if(empty($input_<?php echo $list_field['field'] ?>)) {
-            $allow = 0; 
-        }
 <?php
+		$update_fields[] = $list_field['field'].'=$'.$list_field['field'];
 			}
 		}
 
 ?>
-          
-        $sql = &quot;
+    $input_<?php echo $parameters->primary_key; ?> = (isset($_POST['input_<?php echo $parameters->primary_key; ?>'])) ? GetSQLValueString($_POST['input_<?php echo $parameters->primary_key; ?>'],&quot;int&quot;):0;    
+    if($input_<?php echo $parameters->primary_key; ?> <= 0) { 
+ 
+         $sql = &quot;
         INSERT INTO <?php echo $table; ?> set 
 		<?php echo View_Helper_Get::helper('SqlCreate')->insertFields()->fkFields()->executeFields(); ?>
  		&quot;;
@@ -54,23 +33,27 @@
        
     } else { 
 
-    $update_list = array();
-    
-	<?php echo View_Helper_Get::helper('CodeCreate')->setShowDefaultValue(0)->DisplayFieldTypeList(); ?> 
-    foreach($list as $type =&gt; $fields ) {
-        foreach($fields as $field) { 
-            if(isset($_POST['input_'.$field])) {
-            $$field = ($type == 'text' ) ? GetSQLValueString(trim($_POST['input_'.$field]),$type):GetSQLValueString($_POST['input_'.$field] ,$type) ;
-            $update_list[] = $field.&quot; = &quot;.$$field;
-            } 
-        }
-    } 
-    
-    if(count($update_list) &gt;= 1) { 
-    good_query(&quot;update <?php echo $table; ?> set &quot;.implode(&quot;,&quot;,$update_list).&quot; WHERE <?php echo $parameters->primary_key; ?> = $input_<?php echo $parameters->primary_key; ?>;&quot;);
-    $result = good_query_assoc(&quot;select * from  <?php echo $table; ?> WHERE <?php echo $parameters->primary_key; ?> = $input_<?php echo $parameters->primary_key; ?>;&quot;);
-    } 
- 
+        $update_list = array();
+        
+        <?php echo View_Helper_Get::helper('CodeCreate')->setShowDefaultValue(0)->DisplayFieldTypeList(); ?> 
+        foreach($list as $type =&gt; $fields ) {
+            foreach($fields as $field) { 
+                if(isset($_POST['input_'.$field])) {
+                $$field = ($type == 'text' ) ? GetSQLValueString(trim($_POST['input_'.$field]),$type):GetSQLValueString($_POST['input_'.$field] ,$type) ;
+                $update_list[] = $field.&quot; = &quot;.$$field;
+                } 
+            }
+        } 
+        
+        if(count($update_list) &gt;= 1) { 
+        good_query(&quot;update <?php echo $table; ?> 
+        set  
+        <?php echo implode(",\n",$update_fields)."\n"; ?>
+         WHERE <?php echo $parameters->primary_key; ?> = $input_<?php echo $parameters->primary_key; ?>;&quot;);
+         
+        $result = good_query_assoc(&quot;select * from  <?php echo $table; ?> WHERE <?php echo $parameters->primary_key; ?> = $input_<?php echo $parameters->primary_key; ?>;&quot;);
+        } 
+ 	}
     echo json_encode($result);
     good_close();
 ?&gt;
