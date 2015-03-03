@@ -1,0 +1,134 @@
+<?php
+$row_label = array(); 
+foreach($parameters->auto_label  as $label) {
+$row_label[] = "row['".$label."']";
+}
+?>
+<h1>dashboard_<?php echo  $parameters->auto_table  ?>.php</h1>
+<textarea rows="80" style="width: 100%;">
+  
+  &lt;td class=&quot;small_text&quot;&gt;Country&lt;/td&gt;
+  
+  
+  &lt;td&gt;&lt;input type=&quot;text&quot; id=&quot;input_<?php echo $parameters->auto_field; ?>&quot; value=&quot;&quot;&gt;&lt;/td&gt;
+  
+  &lt;td&gt;&lt;input type=&quot;button&quot; id=&quot;btn_add&quot; value=&quot;Add&quot;&gt;
+  
+  &lt;td class=&quot;small_text&quot;&gt;Country&lt;/td&gt;
+  
+  &lt;td&gt;&lt;input type=&quot;text&quot; id=&quot;search_<?php echo $parameters->auto_field; ?>&quot; value=&quot;&quot;&gt;&lt;/td&gt;
+  
+  
+  
+  &lt;/div&gt;
+  &lt;script type=&quot;application/javascript&quot; language=&quot;javascript&quot;&gt; 
+
+ var autocomplete_<?php echo $parameters->auto_table; ?>_options = {
+  minLength: 3,
+  source: function(request, response) {
+  search_term = request.term;
+  var dataString = 'search_term=' + request.term + '';
+  writeDataConfirm(dataString, 'search_<?php echo $parameters->auto_table; ?>.php', function(rows) {
+  response($.map(rows, function(row) {
+  return {
+  label: <?php echo implode("+' '+",$row_label); ?>,
+  value: row['<?php echo $parameters->auto_table_id; ?>']
+  }
+  }));
+  });
+  },
+  select: function(event, ui) {
+ var $this = $(this);
+ $this.val(ui.item.label);
+  $this.attr('<?php echo $parameters->auto_table_id; ?>', ui.item.value);
+  return false;
+ }
+  };
+
+ function add<?php echo str_replace(' ', '',$parameters->auto_main_table_title); ?>() {
+  
+  var input_<?php echo $parameters->auto_field; ?> = $('#input_<?php echo $parameters->auto_field; ?>').val();
+  if (input_<?php echo $parameters->auto_field; ?> == '') {
+  showMessage('Country is required.', 'error');
+  return false;
+  }
+  
+  if ($('#input_<?php echo $parameters->auto_field; ?>').length &gt;= 1) {
+  dataString += '&amp;input_<?php echo $parameters->auto_field; ?>=' + $('#input_<?php echo $parameters->auto_field; ?>').attr('<?php echo $parameters->auto_table_id; ?>');
+  }
+  
+  }
+ function edit<?php echo str_replace(' ', '',$parameters->auto_main_table_title); ?>() {
+  
+  var input_<?php echo $parameters->auto_field; ?> = $('#input_<?php echo $parameters->auto_field; ?>').val();
+  if (input_<?php echo $parameters->auto_field; ?> == '') {
+  showMessage('Country is required.', 'error');
+  return false;
+  }
+  
+  if ($('#input_<?php echo $parameters->auto_field; ?>').length &gt;= 1) {
+  dataString += '&amp;input_<?php echo $parameters->auto_field; ?>=' + $('#input_<?php echo $parameters->auto_field; ?>').attr('<?php echo $parameters->auto_table_id; ?>');
+  }
+ writeDataConfirm(dataString, 'write.php', function(row) {
+  
+  $('#tr_luna_venue_' + row['luna_venue_id'] + ' .<?php echo $parameters->auto_field; ?>').html(<?php echo implode("+' '+",$row_label); ?>);
+  $('#tr_luna_venue_' + row['luna_venue_id'] + ' .<?php echo $parameters->auto_field; ?>').attr('<?php echo $parameters->auto_field; ?>', row['<?php echo $parameters->auto_field; ?>']);
+ });
+ }
+ function get<?php echo str_replace(' ', '',$parameters->auto_main_table_title); ?>() {
+  
+  if ($(&quot;#search_<?php echo $parameters->auto_field; ?>&quot;).val() != '') {
+  if ($('#search_<?php echo $parameters->auto_field; ?>').length &gt;= 1) {
+  dataString += '&amp;<?php echo $parameters->auto_field; ?>=' + $(&quot;#search_<?php echo $parameters->auto_field; ?>&quot;).attr('<?php echo $parameters->auto_table_id; ?>');
+  }
+  }
+  }
+ function get<?php echo str_replace(' ', '',$parameters->auto_table_title); ?>() {
+ $('#result_table tbody').html('');
+  getData('', 'list_<?php echo $parameters->auto_table; ?>.php', function(rows) {
+  if (rows == 0) {
+  return false;
+  }
+  for (var i in rows) {
+  var row = rows[i];
+  $('#input_<?php echo $parameters->auto_field; ?>').append('&lt;option value=&quot;' + row['<?php echo $parameters->auto_table_id; ?>'] + '&quot;&gt;' + <?php echo implode("+' '+",$row_label); ?> + '&lt;/option&gt;');
+  }
+  });
+ }
+
+ function add<?php echo str_replace(' ', '',$parameters->auto_main_table_title); ?>Row(row) {
+  
+  echo += '&lt;td class=&quot;<?php echo $parameters->auto_field; ?>&quot;&gt;' + <?php echo implode("+' '+",$row_label); ?> + '&lt;/td&gt;';
+  
+  }
+ function reset_boxes() {
+  
+  $(&quot;#input_<?php echo $parameters->auto_field; ?>&quot;).val('');
+ }
+
+ function init() {
+  
+  $('body').on('click', '.btn_edit', function() {
+  
+  getData(dataString, 'get_luna_venue.php', function(row) {
+  if ($('#input_<?php echo $parameters->auto_field; ?>').length &gt;= 1) {
+  $(&quot;#input_<?php echo $parameters->auto_field; ?>&quot;).val(<?php echo implode("+' '+",$row_label); ?>);
+  $(&quot;#input_<?php echo $parameters->auto_field; ?>&quot;).attr('<?php echo $parameters->auto_table_id; ?>', row['<?php echo $parameters->auto_field; ?>']);
+  }
+  
+  });
+ });
+ 
+  $(&quot;#input_<?php echo $parameters->auto_field; ?>&quot;).autocomplete(autocomplete_<?php echo $parameters->auto_table; ?>_options);
+  $(&quot;#search_<?php echo $parameters->auto_field; ?>&quot;).autocomplete(autocomplete_<?php echo $parameters->auto_table; ?>_options);
+
+ $(&quot;#result_table&quot;).tablesorter({});
+ }
+ init();
+  &lt;/script&gt;
+&lt;/body&gt;
+  &lt;/html&gt;
+
+ 
+
+</textarea>

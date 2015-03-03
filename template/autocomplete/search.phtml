@@ -1,0 +1,20 @@
+<h1>search_<?php echo  $parameters->auto_table  ?>.php</h1>
+<textarea rows="80" style="width: 100%;">
+&lt;?php 
+require_once('../includes/secure.php');
+good_connect();
+$<?php echo $parameters->auto_label[0]; ?> = GetSQLValueString($_POST['search_term'] . '%',&quot;text&quot;);
+$table = good_query_table(&quot;SELECT 
+  *
+  FROM <?php echo $parameters->auto_table; ?>
+  WHERE <?php echo $parameters->auto_label[0]; ?> LIKE $<?php echo $parameters->auto_label[0]; ?>
+  ORDER BY <?php echo $parameters->auto_label[0]; ?>;&quot;);
+
+echo json_encode($table);
+good_close();
+?&gt; 
+
+ 
+ 
+
+</textarea>
