@@ -70,7 +70,7 @@ class View_Helper_ArrayCreate {
 			}
 		
 		}	
-
+   		$parameters->no_of_fields = count($sql_fields)-3;
 		$parameters->allow_status = $allow_status; 
  		$parameters->enum_list = $enum_list; 
  		$parameters->list_fields = $list_fields_array; 

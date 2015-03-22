@@ -6,13 +6,13 @@ require_once('../js/secured.php');
 
 good_connect();
  
-$action  = $_POST['action']; 
 $UserID = 1;
 $GroupID = 1;
-$CompanyID  =1;
+$CompanyID  =23;
 $where = "";
 $filter = array();
-if($action == 'list') { 
+ $<?php echo $parameters->primary_key; ?> = GetSQLValueString($_POST['<?php echo $parameters->primary_key; ?>'],"int");
+if($<?php echo $parameters->primary_key; ?> <= 0) { 
   
 <?php 
 		$fields = array();	
@@ -33,8 +33,8 @@ if($action == 'list') {
 ?>
   
 $<?php echo $table; ?>_table = good_query_table("SELECT * FROM <?php echo $table; ?> WHERE 1=1 AND <?php echo View_Helper_Get::helper('SqlCreate')->fkWhere()->statusWhere()->executeWhere(); ?> $<?php echo implode(' $',$fields); ?>");
-} elseif($action == 'single')  {
- $<?php echo $parameters->primary_key; ?> = GetSQLValueString($_POST['<?php echo $parameters->primary_key; ?>'],"int");
+} else {
+
 if(empty($<?php echo $parameters->primary_key; ?>)) {
 echo json_encode(array());	
 return false;	

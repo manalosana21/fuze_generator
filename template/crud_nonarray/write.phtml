@@ -33,27 +33,16 @@
        
     } else { 
 
-        $update_list = array();
+         
+  
         
-        <?php echo View_Helper_Get::helper('CodeCreate')->setShowDefaultValue(0)->DisplayFieldTypeList(); ?> 
-        foreach($list as $type =&gt; $fields ) {
-            foreach($fields as $field) { 
-                if(isset($_POST['input_'.$field])) {
-                $$field = ($type == 'text' ) ? GetSQLValueString(trim($_POST['input_'.$field]),$type):GetSQLValueString($_POST['input_'.$field] ,$type) ;
-                $update_list[] = $field.&quot; = &quot;.$$field;
-                } 
-            }
-        } 
-        
-        if(count($update_list) &gt;= 1) { 
-        good_query(&quot;update <?php echo $table; ?> 
+         good_query(&quot;update <?php echo $table; ?> 
         set  
         <?php echo implode(",\n",$update_fields)."\n"; ?>
          WHERE <?php echo $parameters->primary_key; ?> = $input_<?php echo $parameters->primary_key; ?>;&quot;);
          
         $result = good_query_assoc(&quot;select * from  <?php echo $table; ?> WHERE <?php echo $parameters->primary_key; ?> = $input_<?php echo $parameters->primary_key; ?>;&quot;);
-        } 
- 	}
+  	}
     echo json_encode($result);
     good_close();
 ?&gt;
