@@ -20,7 +20,7 @@ if($<?php echo $parameters->primary_key; ?> <= 0) {
 			if(View_Helper_CSCreate::isFklist($list_field) ) {
 ?>
 	if(isset($_POST['<?php echo $list_field['field'] ?>'])) {	 
- 	$<?php echo $list_field['field'] ?> = GetSQLValueString($_POST['luna_venue_name'],"text");
+ 	$<?php echo $list_field['field'] ?> = GetSQLValueString($_POST['<?php echo $list_field['field'] ?>'],"text");
 	$<?php echo $list_field['field'] ?>_filter = " AND <?php echo $list_field['field'] ?> = ".$<?php echo $list_field['field'] ?>; 						
 	} else {
  	$<?php echo $list_field['field'] ?>_filter = ""; 	
