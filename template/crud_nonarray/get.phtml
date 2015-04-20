@@ -11,7 +11,7 @@ $GroupID = 1;
 $CompanyID  =23;
 $where = "";
 $filter = array();
- $<?php echo $parameters->primary_key; ?> = GetSQLValueString($_POST['<?php echo $parameters->primary_key; ?>'],"int");
+ $<?php echo $parameters->primary_key; ?> = intval(GetSQLValueString($_POST['<?php echo $parameters->primary_key; ?>'],"int"));
 if($<?php echo $parameters->primary_key; ?> <= 0) { 
   
 <?php 
