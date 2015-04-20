@@ -21,7 +21,7 @@
 		}
 
 ?>
-    $input_<?php echo $parameters->primary_key; ?> = (isset($_POST['input_<?php echo $parameters->primary_key; ?>'])) ? GetSQLValueString($_POST['input_<?php echo $parameters->primary_key; ?>'],&quot;int&quot;):0;    
+    $input_<?php echo $parameters->primary_key; ?> = intval(GetSQLValueString($_POST['input_<?php echo $parameters->primary_key; ?>'],&quot;int&quot;));    
     if($input_<?php echo $parameters->primary_key; ?> <= 0) { 
  
          $sql = &quot;
@@ -36,8 +36,8 @@
          
   
         
-         good_query(&quot;update <?php echo $table; ?> 
-        set  
+         good_query(&quot;UPDATE <?php echo $table; ?> 
+        SET  
         <?php echo implode(",\n",$update_fields)."\n"; ?>
          WHERE <?php echo $parameters->primary_key; ?> = $input_<?php echo $parameters->primary_key; ?>;&quot;);
          

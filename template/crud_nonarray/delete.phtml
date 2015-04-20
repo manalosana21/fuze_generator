@@ -1,33 +1,27 @@
 <h1>delete_<?php echo  $table  ?>.php</h1>
 <textarea rows="80" style="width: 100%;">
 &lt;?php 
-    require_once('../js/good_query.php'); 
-    require_once('../js/secured.php'); 
-    good_connect();
-    $action  = $_POST['action']; 
-    $result = 0 ;
-    $allow = 1;
+require_once('../js/good_query.php'); 
+require_once('../js/secured.php'); 
+good_connect();
+$result = 0 ;
+$allow = 1;
     
 <?php if($parameters->is_status_exist == 1)  { ?>    
-     $<?php echo $parameters->primary_key; ?> = GetSQLValueString($_POST['<?php echo $parameters->primary_key; ?>'],&quot;int&quot;);
-        if(!empty($<?php echo $parameters->primary_key; ?>)) {
-            good_query(&quot;update <?php echo $table; ?> set <?php echo $parameters->list_fields[$parameters->status_key]['field'] ?> = -1 WHERE <?php echo $parameters->primary_key; ?> = $<?php echo $parameters->primary_key; ?>;&quot;);
-            $result = 1;
-        }
-<?php } else { ?>      
-  	if(isset($_POST['<?php echo $parameters->primary_key; ?>'])) {
-        $input_<?php echo $parameters->primary_key; ?> = $_POST['<?php echo $parameters->primary_key; ?>']; 
-        if(empty($input_<?php echo $parameters->primary_key; ?>)) {
-        echo json_encode($result);
-        return false; 
-        }
-        $<?php echo $parameters->primary_key; ?> = GetSQLValueString($input_<?php echo $parameters->primary_key; ?>,&quot;int&quot;); 
+    $<?php echo $parameters->primary_key; ?> = GetSQLValueString($_POST['<?php echo $parameters->primary_key; ?>'],&quot;int&quot;);
+    if(!empty($<?php echo $parameters->primary_key; ?>)) {
+        good_query(&quot;update <?php echo $table; ?> set <?php echo $parameters->list_fields[$parameters->status_key]['field'] ?> = -1 WHERE <?php echo $parameters->primary_key; ?> = $<?php echo $parameters->primary_key; ?>;&quot;);
+        $result = 1;
+    }
+    <?php } else { ?>      
+    $<?php echo $parameters->primary_key; ?> = intval(GetSQLValueString($input_<?php echo $parameters->primary_key; ?>,&quot;int&quot;)); 
+    if($<?php echo $parameters->primary_key; ?> > 0) {
         good_query(&quot;delete from  <?php echo $table; ?> WHERE <?php echo $parameters->primary_key; ?> = $<?php echo $parameters->primary_key; ?>;&quot;);
         $result = 1;
-    } 
+    }    
 <?php }  ?>       
-    echo json_encode($result);
-    good_close();
+echo json_encode($result);
+good_close();
 ?&gt;
 
 </textarea>
