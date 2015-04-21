@@ -19,10 +19,10 @@ if($<?php echo $parameters->primary_key; ?> <= 0) {
 			if(View_Helper_CSCreate::isFklist($list_field) ) {
 ?>
 	if(isset($_POST['<?php echo $list_field['field'] ?>'])) {	 
- 	$<?php echo $list_field['field'] ?> = GetSQLValueString($_POST['<?php echo $list_field['field'] ?>'],"<?php echo $list_field['type'] ?>");
-	$<?php echo $list_field['field'] ?>_filter = " AND <?php echo $list_field['field'] ?> = ".$<?php echo $list_field['field'] ?>; 						
+        $<?php echo $list_field['field'] ?> = GetSQLValueString($_POST['<?php echo $list_field['field'] ?>'],"<?php echo $list_field['type'] ?>");
+        $<?php echo $list_field['field'] ?>_filter = " AND <?php echo $list_field['field'] ?> = ".$<?php echo $list_field['field'] ?>; 						
 	} else {
- 	$<?php echo $list_field['field'] ?>_filter = ""; 	
+        $<?php echo $list_field['field'] ?>_filter = ""; 	
 	}
 <?php			 
 		$fields[] = $list_field['field']."_filter";
@@ -33,11 +33,12 @@ if($<?php echo $parameters->primary_key; ?> <= 0) {
   
 $<?php echo $table; ?>_table = good_query_table("SELECT * FROM <?php echo $table; ?> WHERE 1=1 AND <?php echo View_Helper_Get::helper('SqlCreate')->fkWhere()->statusWhere()->executeWhere(); ?> $<?php echo implode(' $',$fields); ?>");
 } else {
-
-if(empty($<?php echo $parameters->primary_key; ?>)) {
-echo json_encode(array());	
-return false;	
-}
+    
+    if(empty($<?php echo $parameters->primary_key; ?>)) {
+        echo json_encode(array());	
+        return false;	
+    }
+    
 $<?php echo $table; ?>_table = good_query_assoc("SELECT * FROM <?php echo $table; ?> where <?php echo View_Helper_Get::helper('SqlCreate')->fkWhere()->statusWhere()->executeWhere(); ?>  AND <?php echo $parameters->primary_key; ?> = $<?php echo $parameters->primary_key; ?> ");
 
 }

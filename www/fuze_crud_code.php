@@ -8,7 +8,7 @@ $required_fields = array();
  //simulation
 //$enum_fields = array('enum_file_category_type' =>  array("0"=>"None","1"=>"Test"));
 //$required_fields = array('file_category_name','file_category_type');
-$table = 'location'; 
+$table = 'menu'; 
 
 //$required_fields = array('location_contacts_name');
 //$table = 'location_contacts'; 

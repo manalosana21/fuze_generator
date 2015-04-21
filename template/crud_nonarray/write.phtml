@@ -24,11 +24,10 @@
     $input_<?php echo $parameters->primary_key; ?> = intval(GetSQLValueString($_POST['input_<?php echo $parameters->primary_key; ?>'],&quot;int&quot;));    
     if($input_<?php echo $parameters->primary_key; ?> <= 0) { 
  
-         $sql = &quot;
-        INSERT INTO <?php echo $table; ?> set 
+        good_query(&quot;
+        INSERT INTO <?php echo $table; ?> SET 
 		<?php echo View_Helper_Get::helper('SqlCreate')->insertFields()->fkFields()->executeFields(); ?>
- 		&quot;;
-        good_query($sql);
+ 		;&quot;);
         $result = good_last();
        
     } else { 
