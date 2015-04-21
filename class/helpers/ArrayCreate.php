@@ -59,7 +59,7 @@ class View_Helper_ArrayCreate {
 					}
 						if(preg_match("/status/i",$sql_field['Field']) && !preg_match("/fk_/i",$sql_field['Field'])) {
 						$list_fields_array[$x_count]['is_status'] = 1;	
-						$is_status_exist = 1;
+ 						$is_status_exist = 1;
 						$parameters->status_key = $x_count; 
 						}
 						if(isset($parameters->fk_lists[$sql_field['Field']])) {
@@ -70,13 +70,13 @@ class View_Helper_ArrayCreate {
 			}
 		
 		}	
-   		$parameters->no_of_fields = count($sql_fields)-3;
+		$parameters->no_of_fields = count($sql_fields)-3;
 		$parameters->allow_status = $allow_status; 
  		$parameters->enum_list = $enum_list; 
  		$parameters->list_fields = $list_fields_array; 
 		$parameters->is_status_exist = $is_status_exist;
- 		$parameters->is_fk_exist = $is_fk_exist;						
-	} 
+ 		$parameters->is_fk_exist = $is_fk_exist;	
+ 	} 
 }
  
 

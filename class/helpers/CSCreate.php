@@ -8,7 +8,11 @@ class View_Helper_CSCreate {
   
    function isStatus($key) {
 	$parameters =  View_Helper_Get::single('parameters');  
-  	return ($parameters->allow_status != 0 || $key != $parameters->status_key); 
+ 	if($parameters->is_status_exist == 1) {
+		return ($parameters->allow_status != 0 || $key != $parameters->status_key);	
+	} else {
+		return 1;
+	}
    }  
 
   function isDefaultValue($list_field) {

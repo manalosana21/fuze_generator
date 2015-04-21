@@ -36,6 +36,7 @@ class View_Helper_CodeCreate {
 			if(isset($this->options_disp_f_type_list['show_default_value']) && $this->options_disp_f_type_list['show_default_value'] == 0) {
 				if(isset($list_field['default_value']) && empty($list_field['default_value']))  {
 				$allow = 1;	
+				
 				} else {
 				$allow = 0;	
 				}

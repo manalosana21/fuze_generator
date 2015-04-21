@@ -15,7 +15,7 @@
 ?>   
   &lt;td class=&quot;small_text&quot;&gt;<?php echo $list_field['field_name'] ?>&lt;/td&gt;
 <?php
-			}
+			} 
 		}
 
 ?>
@@ -161,9 +161,7 @@
 ?>
 */   
   <?php foreach($store_fields as $store_field) { ?>
-      if($('#input_<?php echo $store_field; ?>').length >= 1) {
       dataString += '&amp;input_<?php echo $store_field; ?>='+$('#input_<?php echo $store_field; ?>').val(); 
-      }
   <?php } ?>     
   dataString += '&amp;<?php echo $parameters->primary_key; ?>=0';
   writeDataConfirm(dataString, 'write_<?php echo $table; ?>.php', function (row){
@@ -177,7 +175,6 @@
   
   }
  function edit<?php echo str_replace(' ', '',$parameters->table_title); ?>() {
-  var msg = ''
   var dataString = '';
   var <?php echo $parameters->primary_key; ?> = $(&quot;#btn_add&quot;).attr('<?php echo $parameters->primary_key; ?>');
    if(<?php echo $parameters->primary_key; ?> &lt;= 0 ) {
@@ -200,9 +197,7 @@
 ?>   
   dataString += '&amp;input_<?php echo $parameters->primary_key; ?>='+<?php echo $parameters->primary_key; ?>;
   <?php foreach($store_fields as $store_field) { ?>
-      if($('#input_<?php echo $store_field; ?>').length >= 1) {
       dataString += '&amp;input_<?php echo $store_field; ?>='+$('#input_<?php echo $store_field; ?>').val(); 
-      }
   <?php } ?>   
   writeDataConfirm(dataString, 'write_<?php echo $table; ?>.php', function (row){
   if(row == 0) {
@@ -213,14 +208,10 @@
    <?php foreach($store_fields as $store_field) { ?>
     
 	<?php if(in_array($store_field,$parameters->enum_list)) { ?>	
-      if($('#input_<?php echo $store_field; ?>').length >= 1) {
            $('#tr_<?php echo $table; ?>_'+row['<?php echo $parameters->primary_key; ?>']+' .<?php echo $store_field; ?>').html(enum_field_list['<?php echo $store_field; ?>'][row['<?php echo $store_field; ?>']]);
-      }  
 	<?php } else { ?>
-      if($('#input_<?php echo $store_field; ?>').length >= 1) {
-           $('#tr_<?php echo $table; ?>_'+row['<?php echo $parameters->primary_key; ?>']+' .<?php echo $store_field; ?>').html(row['<?php echo $store_field; ?>']);
-      }    
-	<?php } ?>
+            $('#tr_<?php echo $table; ?>_'+row['<?php echo $parameters->primary_key; ?>']+' .<?php echo $store_field; ?>').html(row['<?php echo $store_field; ?>']);
+ 	<?php } ?>
 
   <?php } ?>  
   
@@ -232,11 +223,9 @@
   var dataString = '&amp;<?php echo $parameters->primary_key; ?>=0'; 
 
    <?php foreach($store_fields as $store_field) { ?>
-      if($('#search_<?php echo $store_field; ?>').length >= 1) { 
           if($(&quot;#search_<?php echo $store_field; ?>&quot;).val() != '') {
                 dataString += '&amp;<?php echo $store_field; ?>='+$(&quot;#search_<?php echo $store_field; ?>&quot;).val();
           }
-      } 
 
   <?php } ?>    
   $('#result_table tbody').html('');
@@ -311,9 +300,7 @@
   var list = new Array('<?php echo $parameters->primary_key; ?>',<?php echo View_Helper_Get::helper('CodeCreate')->DisplayJavascriptFieldList() ?>); 
  
   <?php foreach($store_fields as $store_field) { ?>
-      if($('#input_<?php echo $store_field; ?>').length >= 1) { 
       $(&quot;#input_<?php echo $store_field; ?>&quot;).val(row['<?php echo $store_field; ?>']);
-      }
   <?php } ?>   
   $(&quot;#btn_add&quot;).val('Update');
   $(&quot;#btn_add&quot;).attr('<?php echo $parameters->primary_key; ?>',row['<?php echo $parameters->primary_key; ?>']);
