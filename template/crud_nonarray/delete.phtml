@@ -14,7 +14,7 @@ $allow = 1;
         $result = 1;
     }
     <?php } else { ?>      
-    $<?php echo $parameters->primary_key; ?> = intval(GetSQLValueString(GetSQLValueString($_POST['<?php echo $parameters->primary_key; ?>'],&quot;int&quot;)); 
+    $<?php echo $parameters->primary_key; ?> = intval(GetSQLValueString($_POST['<?php echo $parameters->primary_key; ?>'],&quot;int&quot;)); 
     if($<?php echo $parameters->primary_key; ?> > 0) {
         good_query(&quot;delete from  <?php echo $table; ?> WHERE <?php echo $parameters->primary_key; ?> = $<?php echo $parameters->primary_key; ?>;&quot;);
         $result = 1;
