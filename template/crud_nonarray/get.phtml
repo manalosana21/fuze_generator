@@ -9,21 +9,28 @@ good_connect();
 $UserID = 1;
 $GroupID = 1;
 $CompanyID  =23;
+<?php 
+		$fields = array();	
+		foreach($parameters->list_fields as $key => $list_field) {
+?>
+        $<?php echo str_replace('tms_','',$list_field['field']); ?>_filter = ""; 	
+<?php			 
+		}
 
+?>
 $<?php echo $parameters->primary_key; ?> = intval(GetSQLValueString($_POST['<?php echo $parameters->primary_key; ?>'],"int"));
 if($<?php echo $parameters->primary_key; ?> <= 0) { 
   
 <?php 
 		$fields = array();	
 		foreach($parameters->list_fields as $key => $list_field) {
+		$tmp_field = str_replace('tms_','',$list_field['field']);	
 			if(View_Helper_CSCreate::isFklist($list_field) ) {
 ?>
-	if(isset($_POST['<?php echo $list_field['field'] ?>'])) {	 
-        $<?php echo $list_field['field'] ?> = GetSQLValueString($_POST['<?php echo $list_field['field'] ?>'],"<?php echo $list_field['type'] ?>");
-        $<?php echo $list_field['field'] ?>_filter = " AND <?php echo $list_field['field'] ?> = ".$<?php echo $list_field['field'] ?>; 						
-	} else {
-        $<?php echo $list_field['field'] ?>_filter = ""; 	
-	}
+	if(isset($_POST['<?php echo $tmp_field ?>'])) {	 
+        $<?php echo $tmp_field ?> = GetSQLValueString($_POST['<?php echo $tmp_field ?>'],"<?php echo $list_field['type'] ?>");
+        $<?php echo $tmp_field ?>_filter = " AND <?php echo $list_field['field'] ?> = ".$<?php echo $tmp_field ?>; 						
+	} 
 <?php			 
 		$fields[] = $list_field['field']."_filter";
  			}
