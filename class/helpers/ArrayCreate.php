@@ -7,6 +7,7 @@ class View_Helper_ArrayCreate {
 				'fk_company_id'=>'$CompanyID',
 				'fk_group_id'=>'$GroupID',
 				'fk_user_id'=>'$UserID',
+				'fk_corporation_id'=>'$CorpID',
 				);
 		$parameters->fk_lists = $fk_lists;		
 	} 

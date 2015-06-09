@@ -12,9 +12,11 @@ $CompanyID  =23;
 <?php 
 		$fields = array();	
 		foreach($parameters->list_fields as $key => $list_field) {
+			if(View_Helper_CSCreate::isFklist($list_field) ) {
 ?>
         $<?php echo str_replace('tms_','',$list_field['field']); ?>_filter = ""; 	
-<?php			 
+<?php		
+			}
 		}
 
 ?>
