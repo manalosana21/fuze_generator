@@ -1,130 +1,89 @@
 <h1>dashboard_<?php echo  $table  ?>.php</h1>
 <textarea   rows="300" style="width:100%">
 &lt;?php 
-  require_once('js/header.php'); ?&gt;
-  &lt;div id=&quot;div_<?php echo $table; ?>&quot; &gt;
-  &lt;table&gt;
-  &lt;thead&gt;
-  &lt;tr class=&quot;bg_lightpink&quot;&gt;
-  &lt;td colspan=&quot;<?php echo $parameters->no_of_fields; ?>&quot; class=&quot;large_text bold_text&quot;&gt;<?php echo $parameters->table_title; ?>&lt;/td&gt;
-  &lt;/tr&gt;
-  &lt;tr&gt;
-<?php 
- 		foreach($parameters->list_fields as $key => $list_field) {
-			if(View_Helper_CSCreate::isFklist($list_field) && View_Helper_CSCreate::isStatus($key) && View_Helper_CSCreate::isDefaultValue($list_field)) {
-?>   
-  &lt;td class=&quot;small_text&quot;&gt;<?php echo $list_field['field_name'] ?>&lt;/td&gt;
-<?php
-			} 
-		}
+  require_once('includes/header.php'); ?&gt;
+    &lt;div class=&quot;row&quot;&gt;
+    &lt;div class=&quot;row_label3&quot;&gt;
+    &lt;span&gt;<?php echo $parameters->table_title; ?>&lt;/span&gt;
+    &lt;/div&gt;
+    &lt;/div&gt;
+    &lt;div class=&quot;row&quot;&gt;
+    &lt;div class=&quot;row_label&quot;&gt;
+    &lt;h2&gt;Details&lt;/h2&gt;
+    &lt;/div&gt;
+    &lt;div class=&quot;row_content row_content_main_margin&quot;  id=&quot;div_tms_account&quot; &gt;
+    <?php 
+            foreach($parameters->list_fields as $key => $list_field) {
+                if(View_Helper_CSCreate::isFklist($list_field) && View_Helper_CSCreate::isStatus($key) && View_Helper_CSCreate::isDefaultValue($list_field)) {
+    ?>   
+    &lt;label class=&quot;label_lg&quot;&gt;
+    &lt;span&gt;<?php echo $list_field['field_name'] ?>&lt;/span&gt;
+    &lt;input type=&quot;text&quot; id=&quot;input_<?php echo $list_field['field'] ?>&quot; class=&quot;input_lg input_<?php echo $list_field['field'] ?>&quot; value=&quot;&quot; &gt;
+    &lt;/label&gt;  
+    <?php
+                } 
+            }
+    ?>
+    &lt;label class=&quot;label_lg&quot;&gt;
+    &lt;span&gt;&amp;nbsp;&lt;/span&gt;
+    &lt;input type=&quot;button&quot; value=&quot;add&quot; id=&quot;btn_add&quot; class=&quot;btn_med_fill&quot; <?php echo $parameters->primary_key; ?>=&quot;0&quot;&gt;
+    &lt;/label&gt; 
+    &lt;label class=&quot;label_med&quot;&gt;
+    &lt;span&gt;&amp;nbsp;&lt;/span&gt;
+    &lt;input type=&quot;button&quot; value=&quot;cancel&quot; id=&quot;btn_cancel&quot; class=&quot;btn_med_fill&quot; style=&quot;display:none&quot;&gt;
+    &lt;/label&gt; 
+    &lt;/div&gt;
+    &lt;/div&gt;
 
-?>
-  &lt;td&gt;&lt;/td&gt;
-  &lt;/tr&gt;
-  &lt;/thead&gt;
-  &lt;tbody&gt;
-  &lt;tr&gt;
-<?php 
-		foreach($parameters->list_fields as $key => $list_field) {
-			if(View_Helper_CSCreate::isFklist($list_field) && View_Helper_CSCreate::isStatus($key) && View_Helper_CSCreate::isDefaultValue($list_field)) {
-				if($list_field['is_enum'] == 0) {
-?>     
-  &lt;td&gt;&lt;input type=&quot;text&quot; id=&quot;input_<?php echo $list_field['field'] ?>&quot; value=&quot;&quot;&gt;&lt;/td&gt;
-<?php
- 				} else {
-?>
-   &lt;td&gt;&lt;select id=&quot;input_<?php echo $list_field['field'] ?>&quot;&gt;
-  <?php foreach($list_field['enum'] as $item_label => $value) { ?>
-  &lt;option value=&quot;<?php echo $item_label ?>&quot;&gt;<?php echo $value ?>&lt;/option&gt;
-  <?php } ?>
-  &lt;/select&gt;&lt;/td&gt;
-<?php
-				}
-			}
-		}
-
-?>  
-  &lt;td&gt;&lt;input type=&quot;button&quot; id=&quot;btn_add&quot; value=&quot;Add&quot;&gt;
-  &lt;input type=&quot;hidden&quot; id=&quot;btn_cancel&quot; value=&quot;Cancel&quot;&gt;&lt;/td&gt;
-  &lt;/tr&gt;
-  &lt;tr&gt;
-  &lt;td colspan=&quot;<?php echo $parameters->no_of_fields; ?>&quot; &gt;&amp;nbsp;&lt;/td&gt;
-  &lt;/tr&gt;
-  &lt;tr&gt;
-  &lt;td colspan=&quot;<?php echo $parameters->no_of_fields; ?>&quot; &gt;&lt;table width=&quot;100%&quot;&gt;
-  &lt;thead&gt;
-  &lt;tr class=&quot;bg_lightpink&quot;&gt;
-  &lt;td colspan=&quot;<?php echo $parameters->no_of_fields; ?>&quot; class=&quot;large_text bold_text&quot;&gt;Search&lt;/td&gt;
-  &lt;/tr&gt;
-  &lt;tr&gt;
-<?php 
-		foreach($parameters->list_fields as $key => $list_field) {
-			if(View_Helper_CSCreate::isFklist($list_field) && View_Helper_CSCreate::isStatus($key) && View_Helper_CSCreate::isDefaultValue($list_field)) {
-?>     
-  &lt;td class=&quot;small_text&quot;&gt;<?php echo $list_field['field_name'] ?>&lt;/td&gt;
-<?php
-			}
-		}
-
-?>  
-  &lt;td&gt;&lt;/td&gt;
-  &lt;/tr&gt;
-  &lt;/thead&gt;
-  &lt;tbody&gt;
-  &lt;tr&gt;
-<?php 
-		foreach($parameters->list_fields as $key => $list_field) {
-			if(View_Helper_CSCreate::isFklist($list_field) && View_Helper_CSCreate::isStatus($key) && View_Helper_CSCreate::isDefaultValue($list_field)) {
-				if($list_field['is_enum'] == 0) {
-?>     
-  &lt;td&gt;&lt;input type=&quot;text&quot; id=&quot;search_<?php echo $list_field['field'] ?>&quot; value=&quot;&quot;&gt;&lt;/td&gt;
-<?php
- 				} else {
-?>  
-  &lt;td&gt;&lt;select id=&quot;search_<?php echo $list_field['field'] ?>&quot;&gt;
-  &lt;option value=&quot;&quot;&gt;[Select]&lt;/option&gt;
-  <?php foreach($list_field['enum'] as $item_label => $value) { ?>
-  &lt;option value=&quot;<?php echo $item_label ?>&quot;&gt;<?php echo $value ?>&lt;/option&gt;
-  <?php } ?>
-  &lt;/select&gt;&lt;/td&gt;
-<?php
-				}
-			}
-		}
-?>    
-  &lt;td&gt;&lt;input type=&quot;button&quot; id=&quot;btn_refresh&quot; value=&quot;Refresh&quot;/&gt;&lt;/td&gt;
-  &lt;/tr&gt;
-  &lt;tr&gt;
-  &lt;/tbody&gt;
-  &lt;/table&gt;&lt;/td&gt;
-  &lt;/tr&gt;
-  &lt;tr&gt;
-  &lt;td colspan=&quot;<?php echo $parameters->no_of_fields; ?>&quot; &gt;&amp;nbsp;&lt;/td&gt;
-  &lt;/tr&gt;
-  &lt;tr&gt;
-  &lt;td colspan=&quot;<?php echo $parameters->no_of_fields; ?>&quot; &gt;&lt;table id=&quot;result_table&quot;  class=&quot;tablesorter result_table&quot; width=&quot;100%&quot;&gt;
-  &lt;thead&gt;
-  &lt;tr  class=&quot;bg_lightgreen&quot;&gt;
-<?php 
-		foreach($parameters->list_fields as $key => $list_field) {
-			if(View_Helper_CSCreate::isFklist($list_field) && View_Helper_CSCreate::isStatus($key)) {	
-?>    
-  &lt;th&gt;&lt;label&gt;<?php echo $list_field['field_name'] ?>&lt;/label&gt;&lt;/th&gt;
-<?php
-			}
-		}
-
-?>
-  &lt;th colspan=&quot;2&quot;  data-sorter=&quot;false&quot;&gt;&lt;label&gt;Action&lt;/label&gt;&lt;/th&gt;
-  &lt;/tr&gt;
-  &lt;/thead&gt;
-  &lt;tbody  class=&quot;tbody_block_print&quot;&gt;
-  &lt;/tbody&gt;
-  &lt;/table&gt;&lt;/td&gt;
-  &lt;/tr&gt;
-  &lt;/tbody&gt;
-  &lt;/table&gt;
+  &lt;div class=&quot;row&quot;&gt;
+  &lt;div class=&quot;row_label&quot;&gt;
+  &lt;h2&gt;FILTER&lt;/h2&gt;
+  &lt;p&gt;Selected/Total&lt;/p&gt;
+  &lt;p&gt;Total: &lt;span id=&quot;total_result&quot;&gt;0&lt;/span&gt;&lt;/p&gt;
   &lt;/div&gt;
+  &lt;div class=&quot;row_content row_content_main_margin&quot;&gt;
+  
+<?php 
+        foreach($parameters->list_fields as $key => $list_field) {
+            if(View_Helper_CSCreate::isFklist($list_field) && View_Helper_CSCreate::isStatus($key) && View_Helper_CSCreate::isDefaultValue($list_field)) {
+?>   
+  &lt;label class=&quot;label_lg&quot;&gt;
+  &lt;span&gt;<?php echo $list_field['field_name'] ?>&lt;/span&gt;
+  &lt;input type=&quot;text&quot; id=&quot;search_<?php echo $list_field['field'] ?>&quot; class=&quot;input_lg input_<?php echo $list_field['field'] ?>&quot; value=&quot;&quot; &gt;
+  &lt;/label&gt;  
+<?php
+            } 
+        }
+?> 
+
+  &lt;label class=&quot;label_lg&quot;&gt;
+  &lt;span&gt;&amp;nbsp;&lt;/span&gt;
+  &lt;input type=&quot;button&quot; value=&quot;Refresh&quot; id=&quot;btn_refresh&quot; class=&quot;btn_med_fill&quot;&gt;
+  &lt;/label&gt; 
+  
+  &lt;/div&gt;
+  &lt;/div&gt;
+
+  &lt;table id=&quot;<?php echo $table; ?>_table&quot; class=&quot;main_dynamic_table dynamic_table <?php echo $table; ?>_table&quot; width=&quot;100%&quot;&gt; 
+  &lt;thead&gt; 
+  &lt;tr&gt;
+  &lt;th class=&quot;label_sm&quot;&gt;&lt;span&gt;Type&lt;/span&gt;&lt;/th&gt;
+<?php 
+        foreach($parameters->list_fields as $key => $list_field) {
+            if(View_Helper_CSCreate::isFklist($list_field) && View_Helper_CSCreate::isStatus($key) && View_Helper_CSCreate::isDefaultValue($list_field)) {
+?>   
+  &lt;th class=&quot;label_sm&quot;&gt;&lt;span&gt;<?php echo $list_field['field_name'] ?>&lt;/span&gt;&lt;/th&gt;
+<?php
+            } 
+        }
+?> 
+  &lt;th class=&quot;label_lg&quot;  data-sorter=&quot;false&quot;&gt;&lt;span&gt;Tools&lt;/span&gt;&lt;/th&gt;
+  &lt;/tr&gt;
+  &lt;/thead&gt;
+  &lt;tbody aria-live=&quot;polite&quot; aria-relevant=&quot;all&quot; class=&quot;tbody_<?php echo $table; ?>_table&quot;&gt;
+  &lt;/tbody&gt; 
+  &lt;/table&gt;
+         
   &lt;script type=&quot;application/javascript&quot; language=&quot;javascript&quot;&gt; 
    
   function add<?php echo str_replace(' ', '',$parameters->table_title); ?>() {
