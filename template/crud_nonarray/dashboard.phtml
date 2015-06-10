@@ -139,18 +139,18 @@ $('#tr_<?php echo $table; ?>_'+row['<?php echo $parameters->primary_key; ?>']+' 
           }
 
   <?php } ?>    
-  $('#result_table tbody').html('');
+  $('#<?php echo $table; ?>_table tbody').html('');
   startSpin();
   getData(dataString, 'get_<?php echo $table; ?>.php', function(rows){
   stopSpin();
   if(rows == 0) {
-  $(&quot;#result_table&quot;).trigger(&quot;update&quot;);
+  $(&quot;#<?php echo $table; ?>_table&quot;).trigger(&quot;update&quot;);
   return false;
   }
   for(var i in rows) {
   add<?php echo str_replace(' ', '',$parameters->table_title); ?>Row(rows[i]);
   }
-  $(&quot;#result_table&quot;).trigger(&quot;update&quot;);
+  $(&quot;#<?php echo $table; ?>_table&quot;).trigger(&quot;update&quot;);
   });
   
   }
@@ -169,7 +169,7 @@ $('#tr_<?php echo $table; ?>_'+row['<?php echo $parameters->primary_key; ?>']+' 
   echo += '| &lt;a class=&quot;btn_delete&quot; <?php echo $parameters->primary_key; ?>=&quot;'+row['<?php echo $parameters->primary_key; ?>']+'&quot;&gt;delete&lt;/a&gt;&lt;/td&gt;';
   echo += '&lt;/td&gt;';
   echo += '&lt;/tr&gt;';
-  $('.result_table tbody').append(echo);
+  $('.<?php echo $table; ?>_table tbody').append(echo);
   }
   
   function reset_boxes() {
@@ -239,7 +239,7 @@ $('#tr_<?php echo $table; ?>_'+row['<?php echo $parameters->primary_key; ?>']+' 
   }); 
  
   get<?php echo str_replace(' ', '',$parameters->table_title); ?>(); 
-  $(&quot;#result_table&quot;).tablesorter( {} ); 
+  $(&quot;#<?php echo $table; ?>_table&quot;).tablesorter( {} ); 
   
   }
   
