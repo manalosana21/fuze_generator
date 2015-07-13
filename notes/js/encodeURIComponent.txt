@@ -1,0 +1,1 @@
+encodeURIComponent(input_note) 

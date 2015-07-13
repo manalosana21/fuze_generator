@@ -1,0 +1,5 @@
+$(".input_fiter_date").datepicker({
+	minDate: "-3Y",
+	maxDate: "+3Y",
+	dateFormat:  "yy-mm-dd"
+});
