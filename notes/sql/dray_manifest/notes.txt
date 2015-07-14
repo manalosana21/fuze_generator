@@ -1,0 +1,2 @@
+dray_manifest_empty checks empty containers not 
+dray_manifest_sub_status for them to track stages
