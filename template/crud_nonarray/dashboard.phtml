@@ -86,50 +86,6 @@
          
   &lt;script type=&quot;application/javascript&quot; language=&quot;javascript&quot;&gt; 
    
-function edit<?php echo str_replace(' ', '',$parameters->table_title); ?>() {
-var <?php echo $parameters->primary_key; ?> = $(&quot;#btn_add&quot;).attr('<?php echo $parameters->primary_key; ?>');
-var dataString = '';
-<?php 
-		foreach($parameters->list_fields as $key => $list_field) {
- 			if(View_Helper_CSCreate::isFklist($list_field) && !View_Helper_CSCreate::IsRequired($list_field)) {
-?>       
-  var input_<?php echo $list_field['field'] ?>  =  $.trim($('#input_<?php echo $list_field['field'] ?>').val()); 
-  if(input_<?php echo $list_field['field'] ?> == '' ) {
-  $('#input_<?php echo $list_field['field'] ?>').focus();
-  showMessage('<?php echo $list_field['field_name'] ?> must not be empty', 'error'); 
-  return false;
-  }
-<?php
-			}  
-		}
-
-?> 
-
-dataString += '&amp;input_<?php echo $parameters->primary_key; ?>=' + <?php echo $parameters->primary_key; ?>;
-<?php foreach($store_fields as $store_field) { ?>
-dataString += '&amp;input_<?php echo $store_field; ?>='+<?php echo $store_field; ?>; 
-<?php } ?>   
-
-writeDataConfirm(dataString, 'write_<?php echo $parameters->primary_key; ?>.php', function(row) {
-if (row == 0) {
-showMessage('Error.', 'error');
-return false;
-}
-showMessage('<?php echo $parameters->table_title ?> Added.', 'success');
-if(<?php echo $parameters->primary_key; ?> &lt;= 0) {
-add<?php echo str_replace(' ', '',$parameters->table_title); ?>Row(row);
-reset_boxes();
-} else {
-   <?php foreach($store_fields as $store_field) { ?>
-	<?php if(in_array($store_field,$parameters->enum_list)) { ?>	
-$('#tr_<?php echo $table; ?>_'+row['<?php echo $parameters->primary_key; ?>']+' .<?php echo $store_field; ?>').html(enum_field_list['<?php echo $store_field; ?>'][row['<?php echo $store_field; ?>']]);
-	<?php } else { ?>
-$('#tr_<?php echo $table; ?>_'+row['<?php echo $parameters->primary_key; ?>']+' .<?php echo $store_field; ?>').html(row['<?php echo $store_field; ?>']);
- 	<?php } ?>
-  <?php } ?>  
-}
-});
-}
   function get<?php echo str_replace(' ', '',$parameters->table_title); ?>() {
   var dataString = '&amp;<?php echo $parameters->primary_key; ?>=0'; 
 
@@ -155,43 +111,15 @@ $('#tr_<?php echo $table; ?>_'+row['<?php echo $parameters->primary_key; ?>']+' 
   
   }
   
-  function add<?php echo str_replace(' ', '',$parameters->table_title); ?>Row(row) {
-  var echo = '&lt;tr id=&quot;tr_<?php echo $table; ?>_'+row['<?php echo $parameters->primary_key; ?>']+'&quot;&gt;';
 
-  <?php foreach($store_fields as $store_field) { ?>
-	  <?php if(in_array($store_field,$parameters->enum_list)) { ?>
-      echo += '&lt;td class=&quot;<?php echo $store_field; ?>&quot;&gt;'+enum_field_list['<?php echo $store_field; ?>'][row['<?php echo $store_field; ?>']]+'&lt;/td&gt;';
-      <?php } else { ?>
-      echo += '&lt;td class=&quot;<?php echo $store_field; ?>&quot;&gt;'+row['<?php echo $store_field; ?>']+'&lt;/td&gt;';
-      <?php } ?>
-  <?php } ?>   
-  echo += '&lt;td&gt;&lt;a class=&quot;btn_edit&quot; <?php echo $parameters->primary_key; ?>=&quot;'+row['<?php echo $parameters->primary_key; ?>']+'&quot;&gt;edit&lt;/a&gt; ';
-  echo += '| &lt;a class=&quot;btn_delete&quot; <?php echo $parameters->primary_key; ?>=&quot;'+row['<?php echo $parameters->primary_key; ?>']+'&quot;&gt;delete&lt;/a&gt;&lt;/td&gt;';
-  echo += '&lt;/td&gt;';
-  echo += '&lt;/tr&gt;';
-  $('.<?php echo $table; ?>_table tbody').append(echo);
-  }
   
   function reset_boxes() {
   <?php foreach($store_fields as $store_field) { ?>
   $(&quot;#input_<?php echo $store_field; ?>&quot;).val('');    
   <?php } ?>   
-  $(&quot;#btn_add&quot;).removeAttr('<?php echo $parameters->primary_key; ?>');
-  $(&quot;#btn_add&quot;).val('Add');
+  $(&quot;#btn_add&quot;).attr('<?php echo $parameters->primary_key; ?>',0);
   $(&quot;#btn_cancel&quot;).attr('type','hidden'); 
   }
- function init() {
-  $( &quot;#btn_add&quot; ).click(function() {
-  var optionvalue = $( this).val();
-  switch(optionvalue) {
-  case 'Add':
-  add<?php echo str_replace(' ', '',$parameters->table_title); ?>();
-  break;
-  case 'Update':
-  edit<?php echo str_replace(' ', '',$parameters->table_title); ?>(); 
-  break;
-  } 
-  }); 
   
   $( &quot;#btn_cancel&quot; ).click(function() {
   reset_boxes();
@@ -221,6 +149,23 @@ $('#tr_<?php echo $table; ?>_'+row['<?php echo $parameters->primary_key; ?>']+' 
   });
   
   });
+
+  function add<?php echo str_replace(' ', '',$parameters->table_title); ?>Row(row) {
+  var echo = '&lt;tr id=&quot;tr_<?php echo $table; ?>_'+row['<?php echo $parameters->primary_key; ?>']+'&quot;&gt;';
+
+  <?php foreach($store_fields as $store_field) { ?>
+	  <?php if(in_array($store_field,$parameters->enum_list)) { ?>
+      echo += '&lt;td class=&quot;<?php echo $store_field; ?>&quot;&gt;'+enum_field_list['<?php echo $store_field; ?>'][row['<?php echo $store_field; ?>']]+'&lt;/td&gt;';
+      <?php } else { ?>
+      echo += '&lt;td class=&quot;<?php echo $store_field; ?>&quot;&gt;'+row['<?php echo $store_field; ?>']+'&lt;/td&gt;';
+      <?php } ?>
+  <?php } ?>   
+  echo += '&lt;td&gt;&lt;a class=&quot;btn_edit&quot; <?php echo $parameters->primary_key; ?>=&quot;'+row['<?php echo $parameters->primary_key; ?>']+'&quot;&gt;edit&lt;/a&gt; ';
+  echo += '| &lt;a class=&quot;btn_delete&quot; <?php echo $parameters->primary_key; ?>=&quot;'+row['<?php echo $parameters->primary_key; ?>']+'&quot;&gt;delete&lt;/a&gt;&lt;/td&gt;';
+  echo += '&lt;/td&gt;';
+  echo += '&lt;/tr&gt;';
+  $('.<?php echo $table; ?>_table tbody').append(echo);
+  }
   
   $('body').on('click', '.btn_delete', function(){
   var <?php echo $parameters->primary_key; ?> = $(this).attr('<?php echo $parameters->primary_key; ?>');
@@ -241,9 +186,52 @@ $('#tr_<?php echo $table; ?>_'+row['<?php echo $parameters->primary_key; ?>']+' 
   get<?php echo str_replace(' ', '',$parameters->table_title); ?>(); 
   $(&quot;#<?php echo $table; ?>_table&quot;).tablesorter( {} ); 
   
-  }
   
-  init();
+  
+$( "#btn_add" ).click(function() {
+var <?php echo $parameters->primary_key; ?> = $(&quot;#btn_add&quot;).attr('<?php echo $parameters->primary_key; ?>');
+var dataString = '';
+<?php 
+		foreach($parameters->list_fields as $key => $list_field) {
+ 			if(View_Helper_CSCreate::isFklist($list_field) && !View_Helper_CSCreate::IsRequired($list_field)) {
+?>       
+  var input_<?php echo $list_field['field'] ?>  =  $.trim($('#input_<?php echo $list_field['field'] ?>').val()); 
+  if(input_<?php echo $list_field['field'] ?> == '' ) {
+  $('#input_<?php echo $list_field['field'] ?>').focus();
+  showMessage('<?php echo $list_field['field_name'] ?> must not be empty', 'error'); 
+  return false;
+  }
+<?php
+			}  
+		}
+
+?> 
+
+dataString += '&amp;input_<?php echo $parameters->primary_key; ?>=' + <?php echo $parameters->primary_key; ?>;
+<?php foreach($store_fields as $store_field) { ?>
+dataString += '&amp;input_<?php echo $store_field; ?>='+<?php echo $store_field; ?>; 
+<?php } ?>   
+
+writeDataConfirm(dataString, 'write_<?php echo $table ; ?>.php', function(row) {
+if (row == 0) {
+showMessage('Error.', 'error');
+return false;
+}
+showMessage('<?php echo $parameters->table_title ?> Added.', 'success');
+if(<?php echo $parameters->primary_key; ?> <= 0) {
+add<?php echo str_replace(' ', '',$parameters->table_title); ?>Row(row);
+reset_boxes();
+} else {
+   <?php foreach($store_fields as $store_field) { ?>
+	<?php if(in_array($store_field,$parameters->enum_list)) { ?>	
+$('#tr_<?php echo $table; ?>_'+row['<?php echo $parameters->primary_key; ?>']+' .<?php echo $store_field; ?>').html(enum_field_list['<?php echo $store_field; ?>'][row['<?php echo $store_field; ?>']]);
+	<?php } else { ?>
+$('#tr_<?php echo $table; ?>_'+row['<?php echo $parameters->primary_key; ?>']+' .<?php echo $store_field; ?>').html(row['<?php echo $store_field; ?>']);
+ 	<?php } ?>
+  <?php } ?>  
+}
+});
+});
   &lt;/script&gt;
   &lt;?php require_once('js/footer.php'); ?&gt;
  
