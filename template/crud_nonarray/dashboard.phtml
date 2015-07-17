@@ -113,7 +113,7 @@
   
 
   
-  function reset_boxes() {
+  function reset<?php echo str_replace(' ', '',$parameters->table_title); ?>() {
   <?php foreach($store_fields as $store_field) { ?>
   $(&quot;#input_<?php echo $store_field; ?>&quot;).val('');    
   <?php } ?>   
@@ -122,7 +122,7 @@
   }
   
   $( &quot;#btn_cancel&quot; ).click(function() {
-  reset_boxes();
+  reset<?php echo str_replace(' ', '',$parameters->table_title); ?>();
   }); 
   $( &quot;#btn_refresh&quot; ).click(function() {
   get<?php echo str_replace(' ', '',$parameters->table_title); ?>();
@@ -176,9 +176,10 @@
   writeDataConfirm(dataString, 'delete_<?php echo $table; ?>.php', function(row){
   if(row == 1) {
   $('#tr_<?php echo $table; ?>_'+<?php echo $parameters->primary_key; ?>).remove();
+  showMessage('Success', 'success');
   }
   });
-  reset_boxes(); 
+  reset<?php echo str_replace(' ', '',$parameters->table_title); ?>(); 
   });
   
   }); 
@@ -220,7 +221,7 @@ return false;
 showMessage('<?php echo $parameters->table_title ?> Added.', 'success');
 if(<?php echo $parameters->primary_key; ?> <= 0) {
 add<?php echo str_replace(' ', '',$parameters->table_title); ?>Row(row);
-reset_boxes();
+reset<?php echo str_replace(' ', '',$parameters->table_title); ?>();
 } else {
    <?php foreach($store_fields as $store_field) { ?>
 	<?php if(in_array($store_field,$parameters->enum_list)) { ?>	
