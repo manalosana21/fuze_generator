@@ -1,0 +1,2 @@
+INNER JOIN tms_order ON tms_claim.fk_tms_order_id = tms_order.tms_order_id
+INNER JOIN location as billto on tms_order.fk_billto_id = billto.location_id
