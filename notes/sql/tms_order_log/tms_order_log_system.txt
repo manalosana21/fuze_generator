@@ -1,0 +1,3 @@
+allows option to have an option internal public 
+0 allow option
+1 not allow

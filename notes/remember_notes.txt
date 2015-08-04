@@ -1,1 +1,5 @@
 billto sending to emails
+create an order , rate the order, lock the order, print the invoice to save first invoice order log 
+
+$shipper_id  = intval($order_table['fk_client_id']);
+$consignee_id  = intval($order_table['fk_consignee_id']);
