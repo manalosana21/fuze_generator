@@ -1,0 +1,1 @@
+$date_filter = getDateFilter($_POST['input_invoice_date_from'], $_POST['input_invoice_date_to'], 'tms_ar_invoice_date');
