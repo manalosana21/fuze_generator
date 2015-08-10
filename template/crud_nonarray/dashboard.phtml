@@ -80,7 +80,7 @@
   &lt;th class=&quot;label_lg&quot;  data-sorter=&quot;false&quot;&gt;&lt;span&gt;Tools&lt;/span&gt;&lt;/th&gt;
   &lt;/tr&gt;
   &lt;/thead&gt;
-  &lt;tbody aria-live=&quot;polite&quot; aria-relevant=&quot;all&quot; class=&quot;tbody_<?php echo $table; ?>_table&quot;&gt;
+  &lt;tbody aria-live=&quot;polite&quot; aria-relevant=&quot;all&quot; id=&quot;tbody_<?php echo $table; ?>_table&quot; class=&quot;tbody_<?php echo $table; ?>_table&quot;&gt;
   &lt;/tbody&gt; 
   &lt;/table&gt;
          
@@ -119,6 +119,8 @@
   <?php } ?>   
   $(&quot;#btn_add&quot;).attr('<?php echo $parameters->primary_key; ?>',0);
   $(&quot;#btn_cancel&quot;).attr('type','hidden'); 
+  $(&quot;#btn_cancel&quot;).hide();
+ 
   }
   
   $( &quot;#btn_cancel&quot; ).click(function() {
@@ -143,6 +145,7 @@
   <?php foreach($store_fields as $store_field) { ?>
       $(&quot;#input_<?php echo $store_field; ?>&quot;).val(row['<?php echo $store_field; ?>']);
   <?php } ?>   
+  $(&quot;#btn_cancel&quot;).show();
   $(&quot;#btn_add&quot;).val('Update');
   $(&quot;#btn_add&quot;).attr('<?php echo $parameters->primary_key; ?>',row['<?php echo $parameters->primary_key; ?>']);
   $(&quot;#btn_cancel&quot;).attr('type','button');
@@ -164,7 +167,7 @@
   echo += '| &lt;a class=&quot;btn_delete&quot; <?php echo $parameters->primary_key; ?>=&quot;'+row['<?php echo $parameters->primary_key; ?>']+'&quot;&gt;delete&lt;/a&gt;&lt;/td&gt;';
   echo += '&lt;/td&gt;';
   echo += '&lt;/tr&gt;';
-  $('.<?php echo $table; ?>_table tbody').append(echo);
+  $('#tbody_<?php echo $table; ?>_table').append(echo);
   }
   
   $('body').on('click', '.btn_delete', function(){
