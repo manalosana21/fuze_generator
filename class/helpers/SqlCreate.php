@@ -36,7 +36,12 @@ class View_Helper_SqlCreate {
 		$fields = array();
 		foreach($parameters->list_fields as $key => $list_field) {
 			if($list_field['is_fk_list'] == 0 && !isset($list_field['is_status'])) {
-			$this->fields[] =  $list_field['field'].' = $'.$list_field['field'];
+				
+				if(preg_match("/created_date/i",$list_field['field'])) {
+					$this->fields[] =  $list_field['field'].' = NOW()';
+				} else {	
+					$this->fields[] =  $list_field['field'].' = $'.$list_field['field'];
+				}
 			}
 		}
 	return $this;		 
