@@ -1,0 +1,3 @@
+(select COUNT(task_group_id) from task_group where task_group.fk_tms_dispatch_id =  tms_dispatch.tms_dispatch_id AND fk_location_id is NOT NULL AND task_group_completed_date is NOT NULL) as completed_stops
+
+(select COUNT(task_group_id) from task_group where task_group.fk_tms_dispatch_id =  tms_dispatch.tms_dispatch_id AND fk_location_id is NOT NULL) as total_stops

@@ -1,0 +1,5 @@
+$url = 'http://files.fr8taxi.com/viewh/'.$image['fk_file_id'].'/'.$image['fk_file_key'].'/600';
+file_table
+file_table_id
+file_table_key
+$url = 'http://files.fr8taxi.com/viewh/833959/4ay82q/600';
